@@ -214,7 +214,7 @@ export default async function requestSignature(request) {
           userObject.set('username', signer.email);
           userObject.set('password', masterKey);
           userObject.set('email', signer.email);
-          user = await userObject.save({ useMasterKey: true });
+          user = await userObject.save(null, { useMasterKey: true });
         }
 
         userList.push(user);

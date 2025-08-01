@@ -243,7 +243,7 @@ app.post('/v1/request-signature', upload.single('file'), async (req, res) => {
     res.status(200).json(result);
   } catch (error) {
     console.error('API Error:', error);
-    res.status(error.code || 400).json({
+    res.status(500).json({
       error: error.message || 'Something went wrong'
     });
   }
