@@ -25,7 +25,10 @@ services:
     networks:
       - app-network
   client:
-    image: opensign/opensign:main
+    build:
+      context: ./apps/OpenSign
+      dockerfile: Dockerfile
+    image: opensign-frontend-zh-tw:latest
     container_name: OpenSign-container
     depends_on:
       - server
