@@ -110,6 +110,7 @@ export default async function requestSignature(request) {
   const {
     fileUrl,
     fileName,
+    title,
     description,
     note,
     signers,
@@ -278,7 +279,7 @@ export default async function requestSignature(request) {
     let expiryDate = new Date();
     expiryDate.setDate(currentDate.getDate() + parseInt(timeToCompleteDays));
     const documentObject = new Parse.Object('contracts_Document');
-    documentObject.set('Name', fileName || 'Document');
+    documentObject.set('Name', title || 'Document');
     documentObject.set('Description', description || '');
     documentObject.set('URL', fileUrl);
     documentObject.set('Note', note || 'Please review and sign this document');
