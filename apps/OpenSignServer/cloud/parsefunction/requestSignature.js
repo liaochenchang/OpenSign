@@ -113,6 +113,7 @@ export default async function requestSignature(request) {
     description,
     note,
     signers,
+    redirectUrl,
     timeToCompleteDays = 15,
     sendInOrder = true,
     automaticReminders = false,
@@ -120,8 +121,9 @@ export default async function requestSignature(request) {
     isEnableOTP = false,
     isTourEnabled = false,
     allowModifications = false,
+    notifyOnSignatures = false,
+    sentToOthers = false,
     bcc = [],
-    redirectUrl
   } = request.params;
 
   const apiToken = request.headers?.['x-api-token'];
@@ -286,11 +288,11 @@ export default async function requestSignature(request) {
     documentObject.set('TimeToCompleteDays', parseInt(timeToCompleteDays));
     documentObject.set('AllowModifications', allowModifications);
     documentObject.set('IsEnableOTP', isEnableOTP);
-    documentObject.set('NotifyOnSignatures', true);
+    documentObject.set('NotifyOnSignatures', notifyOnSignatures);
     documentObject.set('CreatedBy', adminUser);
     documentObject.set('ExpiryDate', expiryDate);
     documentObject.set('OriginIp', originIp);
-    documentObject.set('SentToOthers', true);
+    documentObject.set('SentToOthers', sentToOthers);
     documentObject.set('DocSentAt', currentDate);
     documentObject.set('Placeholders', placeholders);
     documentObject.set('SignatureType', [
@@ -314,6 +316,7 @@ export default async function requestSignature(request) {
     documentObject.set('Signers', contacts.map(contact => contact.toPointer()));
     documentObject.set('SignedUrl', fileUrl);
     documentObject.set('ExtUserPtr', adminContractsUser);
+    documentObject.set('RedirectUrl', redirectUrl || '')
 
     const documentAcl = new Parse.ACL();
     userList.forEach(user => {
