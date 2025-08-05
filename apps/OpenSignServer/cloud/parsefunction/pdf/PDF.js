@@ -301,6 +301,28 @@ async function sendMailsaveCertifcate(doc, pfx, isCustomMail, mailProvider, file
   saveFileUsage(CertificateBuffer.length, file.imageUrl, doc?.CreatedBy?.objectId);
   unlinkFile(pfx.name);
 }
+
+async function sendCallback(redirectUrl, pdfBase64 ) {
+  if (!redirectUrl || redirectUrl === '')
+    return;
+
+  if (!pdfBase64 || pdfBase64 === '')
+    return;
+
+  const body = {
+    isSigned: true,
+    fileBase64: pdfBase64
+  };
+
+  try {
+    await axios.post(redirectUrl, body, {
+      headers: { 'X-Parse-Master-Key': masterKEY },
+    });
+  } catch (err) {
+    console.log('err in callback debugginglog', err);
+  }
+}
+
 /**
  *
  * @param docId Id of Document in which user is signing
@@ -389,6 +411,7 @@ async function PDF(req) {
       let filePath = `./exports/${name}`;
       let signedFilePath = `./exports/signed_${name}`;
       let pdfSize = PdfBuffer.length;
+      let pdfBase64 = '';
       if (isCompleted) {
         const signersName = _resDoc.Signers?.map(x => x.Name + ' <' + x.Email + '>');
         const reason =
@@ -421,7 +444,9 @@ async function PDF(req) {
         //`saveUrl` is used to save signed pdf in exports folder
         fs.writeFileSync(signedFilePath, signedDocs);
         pdfSize = signedDocs.length;
-        console.log(`✅ PDF digitally signed created: ${signedFilePath} \n`);
+
+        pdfBase64 = signedDocs.toString('base64');
+        console.log(`✅ PDF digitally signed created: ${signedFilePath} \n`);         
       } else {
         //`saveUrl` is used to save signed pdf in exports folder
         fs.writeFileSync(signedFilePath, PdfBuffer);
@@ -443,11 +468,16 @@ async function PDF(req) {
           className, // className based on flow
           sign // sign base64
         );
+        
         sendNotifyMail(_resDoc, signUser, mailProvider, publicUrl);
         saveFileUsage(pdfSize, data.imageUrl, _resDoc?.CreatedBy?.objectId);
         if (updatedDoc && updatedDoc.isCompleted) {
           const doc = { ..._resDoc, AuditTrail: updatedDoc.AuditTrail, SignedUrl: data.imageUrl };
           sendMailsaveCertifcate(doc, pfx, isCustomMail, mailProvider, `signed_${name}`);
+          
+          const redirectUrl = _resDoc?.RedirectUrl;
+          
+          await sendCallback(redirectUrl, pdfBase64);
         } else {
           unlinkFile(pfxname);
         }

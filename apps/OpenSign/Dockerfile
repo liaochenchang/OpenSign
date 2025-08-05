@@ -10,28 +10,18 @@ COPY package*.json ./
 # Install application dependencies
 RUN npm install
 
-# Copy the application source code
+# Copy the entire application source code
 COPY . .
-
-# Copy entrypoint.sh and make it executable
-COPY entrypoint.sh ./
-RUN chmod +x entrypoint.sh
 
 # Define environment variables
 ENV NODE_ENV=production
 ENV GENERATE_SOURCEMAP=false
 
-# Build the application (it's already built, but this ensures it's fresh)
-RUN npm run build
-
-# Inject env.js loader into index.html
-RUN sed -i '/<head>/a\<script src="/env.js"></script>' build/index.html
+# Build the application if build directory doesn't exist
+RUN if [ ! -d "build" ]; then npm run build; fi
 
 # Make port 3000 available to the world outside this container
 EXPOSE 3000
 
-# Use entrypoint script
-ENTRYPOINT ["./entrypoint.sh"]
-
-# Run the application
+# Run the application directly with npm start
 CMD ["npm", "start"]
