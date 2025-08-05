@@ -114,6 +114,7 @@ export default async function requestSignature(request) {
     note,
     signers,
     redirectUrl,
+    callbackUrl,
     timeToCompleteDays = 15,
     sendInOrder = true,
     automaticReminders = false,
@@ -316,7 +317,7 @@ export default async function requestSignature(request) {
     documentObject.set('Signers', contacts.map(contact => contact.toPointer()));
     documentObject.set('SignedUrl', fileUrl);
     documentObject.set('ExtUserPtr', adminContractsUser);
-    documentObject.set('RedirectUrl', redirectUrl || '')
+    documentObject.set('CallbackUrl', callbackUrl || '')
 
     const documentAcl = new Parse.ACL();
     userList.forEach(user => {

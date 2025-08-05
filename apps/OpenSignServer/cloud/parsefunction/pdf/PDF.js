@@ -302,8 +302,8 @@ async function sendMailsaveCertifcate(doc, pfx, isCustomMail, mailProvider, file
   unlinkFile(pfx.name);
 }
 
-async function sendCallback(redirectUrl, pdfBase64 ) {
-  if (!redirectUrl || redirectUrl === '')
+async function sendCallback(callbackUrl, pdfBase64 ) {
+  if (!callbackUrl || callbackUrl === '')
     return;
 
   if (!pdfBase64 || pdfBase64 === '')
@@ -315,7 +315,7 @@ async function sendCallback(redirectUrl, pdfBase64 ) {
   };
 
   try {
-    await axios.post(redirectUrl, body, {
+    await axios.post(callbackUrl, body, {
       headers: { 'X-Parse-Master-Key': masterKEY },
     });
   } catch (err) {
@@ -475,9 +475,9 @@ async function PDF(req) {
           const doc = { ..._resDoc, AuditTrail: updatedDoc.AuditTrail, SignedUrl: data.imageUrl };
           sendMailsaveCertifcate(doc, pfx, isCustomMail, mailProvider, `signed_${name}`);
           
-          const redirectUrl = _resDoc?.RedirectUrl;
+          const callbackUrl = _resDoc?.CallbackUrl;
           
-          await sendCallback(redirectUrl, pdfBase64);
+          await sendCallback(callbackUrl, pdfBase64);
         } else {
           unlinkFile(pfxname);
         }
