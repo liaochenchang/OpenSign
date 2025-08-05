@@ -1,6 +1,9 @@
 services:
   server:
-    image: opensign/opensignserver:main
+    build:
+      context: .
+      dockerfile: apps/OpenSignServer/Dockerhubfile
+    image: opensign-server-local:latest
     container_name: OpenSignServer-container
     volumes:
       - opensign-files:/usr/src/app/files
@@ -25,7 +28,10 @@ services:
     networks:
       - app-network
   client:
-    image: opensign/opensign:main
+    build:
+      context: ./apps/OpenSign
+      dockerfile: Dockerfile
+    image: opensign-frontend-zh-tw:latest
     container_name: OpenSign-container
     depends_on:
       - server

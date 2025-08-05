@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default async function declinedocument(request) {
   const docId = request.params.docId;
   const reason = request.params?.reason || '';
@@ -21,7 +23,6 @@ export default async function declinedocument(request) {
         updateDoc.set('DeclineReason', reason);
         updateDoc.set('DeclineBy', declineBy);
         await updateDoc.save(null, { useMasterKey: true });
-        return 'document declined';
       } else {
         if (!request?.user) {
           throw new Parse.Error(Parse.Error.INVALID_SESSION_TOKEN, 'User is not authenticated.');
@@ -30,8 +31,21 @@ export default async function declinedocument(request) {
         updateDoc.set('DeclineReason', reason);
         updateDoc.set('DeclineBy', declineBy);
         await updateDoc.save(null, { useMasterKey: true });
-        return 'document declined';
       }
+
+      const redirectUrl = updateDoc.get('RedirectUrl');
+      if (redirectUrl && redirectUrl !== '') {
+        const body = {
+          isSigned: false,
+          reason: reason,
+        };
+
+        await axios.post(redirectUrl, body, {
+          headers: { 'X-Parse-Master-Key': process.env.MASTER_KEY },
+        });
+      }
+
+      return 'document declined';
     } else {
       throw new Parse.Error(Parse.Error.OBJECT_NOT_FOUND, 'Document not found.');
     }

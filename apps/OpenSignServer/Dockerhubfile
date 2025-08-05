@@ -5,6 +5,7 @@ FROM node:22.14.0
 # Install LibreOffice for DOCX to PDF conversions
 RUN apt-get update \
   && apt-get install -y libreoffice \
+  && apt-get install -y fonts-noto-cjk \
   && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
