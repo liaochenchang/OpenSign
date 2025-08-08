@@ -302,7 +302,7 @@ async function sendMailsaveCertifcate(doc, pfx, isCustomMail, mailProvider, file
   unlinkFile(pfx.name);
 }
 
-async function sendCallback(callbackUrl, pdfBase64 ) {
+async function sendCallback(callbackUrl, documentId, pdfBase64 ) {
   if (!callbackUrl || callbackUrl === '')
     return;
 
@@ -311,6 +311,7 @@ async function sendCallback(callbackUrl, pdfBase64 ) {
 
   const body = {
     isSigned: true,
+    documentId: documentId,
     fileBase64: pdfBase64
   };
 
@@ -477,7 +478,7 @@ async function PDF(req) {
           
           const callbackUrl = _resDoc?.CallbackUrl;
           
-          await sendCallback(callbackUrl, pdfBase64);
+          await sendCallback(callbackUrl, docId, pdfBase64);
         } else {
           unlinkFile(pfxname);
         }
