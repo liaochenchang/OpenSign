@@ -278,14 +278,6 @@ function Header(props) {
                 */}
                 {props?.currentSigner && (
                   <div className="flex items-center" data-tut="reactourFifth">
-                    {props?.decline && (
-                      <div
-                        onClick={() => handleDeclinePdfAlert()}
-                        className="text-[red] border-none font-[650] text-[14px] mr-2"
-                      >
-                        {t("decline")}
-                      </div>
-                    )}
                     {props?.isPlaceholder ? (
                       <div
                         onClick={() => {
@@ -295,7 +287,7 @@ function Header(props) {
                         }}
                         className={`${
                           props?.isMailSend ? "" : "op-link-primary"
-                        } op-link no-underline font-[650] text-[14px]`}
+                        } op-link no-underline font-[650] text-[14px] mr-2`}
                         data-tut="headerArea"
                       >
                         {props?.completeBtnTitle
@@ -306,9 +298,17 @@ function Header(props) {
                       <div
                         data-tut="reactourThird"
                         onClick={() => props?.embedWidgetsData()}
-                        className="border-none font-[650] text-[14px] op-link op-link-primary no-underline"
+                        className="border-none font-[650] text-[14px] op-link op-link-primary no-underline mr-2"
                       >
                         {t("finish")}
+                      </div>
+                    )}
+                                        {props?.decline && (
+                      <div
+                        onClick={() => handleDeclinePdfAlert()}
+                        className="border-none font-[500] text-[12px]"
+                      >
+                        {t("decline")}
                       </div>
                     )}
                     <input
@@ -603,14 +603,7 @@ function Header(props) {
                         <span className="hidden lg:block">{t("download")}</span>
                       </button>
                     )}
-                    {!props?.isSelfSign && (
-                      <button
-                        className="op-btn op-btn-secondary op-btn-sm mr-[3px] shadow"
-                        onClick={() => handleDeclinePdfAlert()}
-                      >
-                        {t("decline")}
-                      </button>
-                    )}
+                    
                     {!props?.templateId && (
                       <button
                         type="button"
@@ -634,6 +627,14 @@ function Header(props) {
                     >
                       {t("finish")}
                     </button>
+                    {!props?.isSelfSign && (
+                      <button
+                        className="op-btn op-btn-secondary op-btn-sm mr-[3px] shadow"
+                        onClick={() => handleDeclinePdfAlert()}
+                      >
+                        {t("decline")}
+                      </button>
+                    )}
                   </>
                 )}
               </div>
