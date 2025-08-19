@@ -10,8 +10,10 @@ export default async function GenerateCertificate(docDetails) {
   const pdfDoc = await PDFDocument.create();
   // `fontBytes` is used to embed custom font in pdf
   const fontBytes = fs.readFileSync('./font/times.ttf'); //
+  const chineseFontBytes = fs.readFileSync('./font/NotoSerifTC.ttf');
   pdfDoc.registerFontkit(fontkit);
   const timesRomanFont = await pdfDoc.embedFont(fontBytes, { subset: true });
+  const chineseFont = await pdfDoc.embedFont(chineseFontBytes);
   const pngUrl = fs.readFileSync('./logo.png').buffer;
   const pngImage = await pdfDoc.embedPng(pngUrl);
   const page = pdfDoc.addPage();
@@ -146,7 +148,7 @@ export default async function GenerateCertificate(docDetails) {
     x: 130,
     y: 690,
     size: docDetails?.Name?.length >= 78 ? 12 : text,
-    font: timesRomanFont,
+    font: chineseFont,
     color: textValueColor,
   });
 
@@ -228,7 +230,7 @@ export default async function GenerateCertificate(docDetails) {
     x: 105,
     y: 573,
     size: text,
-    font: timesRomanFont,
+    font: chineseFont,
     color: textValueColor,
   });
   page.drawText('Email :', {
@@ -296,7 +298,7 @@ export default async function GenerateCertificate(docDetails) {
       x: 75,
       y: yPosition2,
       size: signertext,
-      font: timesRomanFont,
+      font: chineseFont,
       color: textValueColor,
     });
 

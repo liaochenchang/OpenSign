@@ -71,7 +71,7 @@ function CustomModal(props) {
               <div className="mx-3  text-base-content">
                 <textarea
                   rows={3}
-                  placeholder="Reason (optional)"
+                  placeholder={t("declined-reason")}
                   className="px-4 op-textarea op-textarea-bordered focus:outline-none hover:border-base-content w-full text-xs"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
