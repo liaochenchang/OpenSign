@@ -591,7 +591,7 @@ function PdfRequestFiles(
       setIsLoading({ isLoad: false });
     } catch (err) {
       console.log("Error: error in getDocumentDetails", err);
-      setHandleError(t("something-went-wrong-mssg"));
+      setHandleError(t("document-not-found-1"));
       setIsLoading({ isLoad: false });
     }
   };
