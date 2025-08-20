@@ -37,6 +37,7 @@ export default async function declinedocument(request) {
       if (redirectUrl && redirectUrl !== '') {
         const body = {
           isSigned: false,
+          documentId: docId,
           reason: reason,
         };
 
