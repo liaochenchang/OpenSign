@@ -33,7 +33,7 @@ export default async function declinedocument(request) {
         await updateDoc.save(null, { useMasterKey: true });
       }
 
-      const redirectUrl = updateDoc.get('RedirectUrl');
+      const redirectUrl = updateDoc.get('CallbackUrl');
       if (redirectUrl && redirectUrl !== '') {
         const body = {
           isSigned: false,
