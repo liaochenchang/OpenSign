@@ -248,3 +248,34 @@ app.post('/v1/request-signature', upload.single('file'), async (req, res) => {
     });
   }
 });
+
+// 刪除文檔API端點
+app.delete('/v1/documents/:docId', async (req, res) => {
+  try {
+    // 動態導入刪除函數
+    const { default: deleteDocument } = await import('../parsefunction/deleteDocument.js');
+    
+    // 構建請求對象，模擬Parse Server的請求格式
+    const request = {
+      params: {
+        docId: req.params.docId
+      },
+      headers: req.headers,
+      user: req.user
+    };
+
+    const result = await deleteDocument(request);
+    
+    if (result.error) {
+      return res.status(400).json(result);
+    }
+    
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Delete Document API Error:', error);
+    res.status(500).json({
+      error: error.message || 'Something went wrong'
+    });
+  }
+});
+

@@ -17,6 +17,7 @@ import LoaderWithMsg from "../primitives/LoaderWithMsg";
 import Title from "../components/Title";
 import ModalUi from "../primitives/ModalUi";
 import Loader from "../primitives/Loader";
+import HandleError from "../primitives/HandleError";
 
 function GuestLogin() {
   const { t, i18n } = useTranslation();
@@ -37,7 +38,7 @@ function GuestLogin() {
   const [contactId, setContactId] = useState(contactBookId);
   const [sendmail, setSendmail] = useState();
   const [contact, setContact] = useState({ name: "", phone: "", email: "" });
-
+  const [handleError, setHandleError] = useState();
 
   const navigateToDoc = async (docId, contactId) => {
     try {
@@ -54,6 +55,7 @@ function GuestLogin() {
         }
         return true;
       } else {
+        setHandleError(t("document-not-found-1"));
         setIsLoading({ isLoad: false });
         return false;
       }
@@ -302,6 +304,8 @@ function GuestLogin() {
 
       {isLoading.isLoad ? (
         <LoaderWithMsg isLoading={isLoading} />
+      ) : handleError ? (
+        <HandleError handleError={handleError} />
       ) : (
         <div className="pb-1 md:pb-4 pt-10 md:px-10 lg:px-16">
           <div className="md:p-4 lg:p-10 p-4 text-base-content bg-base-100 op-card shadow-md">
