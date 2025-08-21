@@ -679,6 +679,7 @@
   "reason": "原因",
   "decline-by": "取消/撤銷者",
   "document-declined": "取消簽約",
+  "document-declined-1": "簽約已取消",
   "declined-reason": "請說明原因",
   "public-template-mssg-1": "要將 OpenSign 整合到您的 React 或 Next.js 專案中，只需執行以下命令：",
   "public-template-mssg-2": "確保您在專案中已設定 npm 或 yarn。如果您使用 Yarn，可以將 npm install 替換為 yarn add @opensign/react。",
