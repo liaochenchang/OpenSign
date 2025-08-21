@@ -1710,7 +1710,7 @@ function PdfRequestFiles(
                 {/* this modal is used to show decline alert */}
                 <PdfDeclineModal
                   show={isDecline.isDeclined}
-                  headMsg={isDecline.currnt === "Sure" ? t("document-declined") : ("document-declined-1")}
+                  headMsg={isDecline.currnt === "Sure" ? t("document-declined") : t("document-declined-1")}
                   bodyMssg={
                     isDecline.currnt === "Sure"
                       ? t("decline-alert-1")
