@@ -552,7 +552,7 @@
   "error": "錯誤",
   "invalid-document": "錯誤：無效的文件！",
   "document-not-found": "找不到文件！",
-  "document-not-found-1": "找不到文件！請聯繫您的租管人員",
+  "document-not-found-1": "合約內容已異動，無法簽署！<br />請查閱您的信箱取得更新後的簽約連結<br/>或是聯繫您的租管人員",
   "document-signed-alert-1": "您已成功簽署文件。您可以下載或列印部分簽署文件的副本。一旦所有簽署者都簽署完成，數位簽署文件和完成憑證的副本將透過電子郵件發送給擁有者和所有簽署者。",
   "encrypted-pdf-not-support": "目前不支援加密的 PDF 檔案。",
   "document-signed-alert-4": "恭喜！🎉 此文件已由所有參與者成功簽署！",
