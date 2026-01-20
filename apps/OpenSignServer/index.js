@@ -29,7 +29,6 @@ if (useLocal !== 'true') {
       bucket: process.env.DO_SPACE,
       baseUrl: process.env.DO_BASEURL,
       fileAcl: 'none',
-      region: process.env.DO_REGION,
       directAccess: true,
       preserveFileName: true,
       presignedUrl: true,
@@ -39,7 +38,8 @@ if (useLocal !== 'true') {
           accessKeyId: process.env.DO_ACCESS_KEY_ID,
           secretAccessKey: process.env.DO_SECRET_ACCESS_KEY,
         },
-        endpoint: spacesEndpoint,
+        endpoint: process.env.DO_ENDPOINT,
+        forcePathStyle: true,
       },
     };
     fsAdapter = new S3Adapter(s3Options);

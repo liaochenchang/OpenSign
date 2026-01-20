@@ -65,6 +65,7 @@ function setupFileStorage() {
         secretAccessKey: DO_SECRET_ACCESS_KEY,
         signatureVersion: 'v4',
         region: process.env.DO_REGION,
+        s3ForcePathStyle: true, // Required for MinIO
       });
       fileStorage = multerS3({
         acl: 'public-read',
@@ -205,6 +206,7 @@ app.post('/v1/request-signature', upload.single('file'), async (req, res) => {
           secretAccessKey: process.env.DO_SECRET_ACCESS_KEY,
           signatureVersion: 'v4',
           region: process.env.DO_REGION,
+          s3ForcePathStyle: true, // Required for MinIO
         });
         
         const uploadResult = await s3.upload({

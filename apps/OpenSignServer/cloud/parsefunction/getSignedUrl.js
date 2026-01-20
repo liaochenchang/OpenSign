@@ -24,7 +24,7 @@ export default function getPresignedUrl(
     const spacesEndpoint =
       new AWS.Endpoint(process.env.DO_ENDPOINT);
 
-    const s3 = new AWS.S3({ endpoint: spacesEndpoint, signatureVersion: 'v4' });
+    const s3 = new AWS.S3({ endpoint: spacesEndpoint, signatureVersion: 'v4', s3ForcePathStyle: true });
 
     // Create a new URL object
     const parsedUrl = new URL(url);
