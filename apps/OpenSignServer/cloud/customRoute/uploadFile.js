@@ -80,6 +80,7 @@ async function uploadFile(req, res) {
           secretAccessKey: DO_SECRET_ACCESS_KEY,
           signatureVersion: 'v4',
           region: process.env.DO_REGION,
+          s3ForcePathStyle: true, // Required for MinIO
         });
         fileStorage = multerS3({
           acl: 'public-read',
