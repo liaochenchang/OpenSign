@@ -198,7 +198,6 @@ app.post('/v1/request-signature', upload.single('file'), async (req, res) => {
         fileUrl = getSignedLocalUrl(baseFileUrl);
       } else {
         // S3存儲
-        const aws = await import('aws-sdk');
         const spacesEndpoint = new aws.Endpoint(process.env.DO_ENDPOINT);
         const s3 = new aws.S3({
           endpoint: spacesEndpoint,
@@ -269,6 +268,7 @@ app.delete('/v1/documents/:docId', async (req, res) => {
     const result = await deleteDocument(request);
     
     if (result.error) {
+      console.error('Delete Document API Error:', result);
       return res.status(400).json(result);
     }
     

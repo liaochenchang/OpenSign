@@ -20,7 +20,11 @@ export default async function deleteDocument(request) {
 
   const document = await query.first({ useMasterKey: true });
   if (!document) {
-    return { error: 'Document not found or already deleted!' };
+    return { 
+      success: true, 
+      message: 'Document not found or already deleted!',
+      documentId: docId 
+    };
   }
 
   try {
