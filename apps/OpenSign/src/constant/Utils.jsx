@@ -2160,6 +2160,27 @@ export const multiSignEmbed = async (widgets, pdfDoc, signyourself, scale) => {
 
           const imageOptions = getWidgetPosition(page, signature, 1, getSize);
           page.drawImage(img, imageOptions);
+
+          // Draw timestamp at the bottom of the signature image
+          const timestampFontSize = 6;
+          const timeZone = "Asia/Taipei";
+          const zonedDate = toZonedTime(new Date(), timeZone);
+          const timestamp = format(zonedDate, "yyyy-MM-dd HH:mm:ss", { timeZone });
+          const timestampX = xPos(position);
+          // Position timestamp at the bottom of the signature widget
+          const timestampY = yPos(position) + widgetHeight - timestampFontSize - 2;
+          const timestampPosition = compensateRotation(
+            page.getRotation().angle,
+            timestampX,
+            timestampY,
+            1,
+            getSize,
+            timestampFontSize,
+            rgb(0, 0, 0),
+            font,
+            page
+          );
+          page.drawText(timestamp, timestampPosition);
         }
       } catch (err) {
         console.log("Err in embed widget on page ", pageNo, err?.message);
