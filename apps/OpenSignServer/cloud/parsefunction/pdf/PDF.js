@@ -302,17 +302,15 @@ async function sendMailsaveCertifcate(doc, pfx, isCustomMail, mailProvider, file
   unlinkFile(pfx.name);
 }
 
-async function sendCallback(callbackUrl, documentId, pdfBase64 ) {
+async function sendCallback(callbackUrl, documentId, pdfBase64, signerEmail) {
   if (!callbackUrl || callbackUrl === '')
-    return;
-
-  if (!pdfBase64 || pdfBase64 === '')
     return;
 
   const body = {
     isSigned: true,
     documentId: documentId,
-    fileBase64: pdfBase64
+    fileBase64: pdfBase64,
+    signerEmail: signerEmail,
   };
 
   try {
@@ -453,6 +451,9 @@ async function PDF(req) {
         fs.writeFileSync(signedFilePath, PdfBuffer);
         pdfSize = PdfBuffer.length;
         console.log(`New Signed PDF created called: ${signedFilePath}`);
+
+        const callbackUrl = _resDoc?.CallbackUrl;
+        await sendCallback(callbackUrl, docId, '', userEmail);
       }
 
       // `uploadFile` is used to upload pdf to aws s3 and get it's url
@@ -478,7 +479,7 @@ async function PDF(req) {
           
           const callbackUrl = _resDoc?.CallbackUrl;
           
-          await sendCallback(callbackUrl, docId, pdfBase64);
+          await sendCallback(callbackUrl, docId, pdfBase64, userEmail);
         } else {
           unlinkFile(pfxname);
         }
