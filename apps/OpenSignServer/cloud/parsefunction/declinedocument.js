@@ -15,6 +15,8 @@ export default async function declinedocument(request) {
   try {
     const docCls = new Parse.Query('contracts_Document');
     docCls.include('ExtUserPtr.TenantId');
+    docCls.include('Signers');
+
     const updateDoc = await docCls.get(docId, { useMasterKey: true });
     if (updateDoc) {
       const isEnableOTP = updateDoc?.get('IsEnableOTP') || false;
@@ -35,10 +37,25 @@ export default async function declinedocument(request) {
 
       const redirectUrl = updateDoc.get('CallbackUrl');
       if (redirectUrl && redirectUrl !== '') {
+        let signerEmail = '';
+        if (request.params?.userId) {
+          const contactQuery = new Parse.Query('contracts_Contactbook');
+          contactQuery.equalTo('UserId', {
+            __type: 'Pointer',
+            className: '_User',
+            objectId: request.params.userId,
+          });
+          const contact = await contactQuery.first({ useMasterKey: true });
+          if (contact) {
+            signerEmail = contact?.get('Email') || '';
+          }
+        }
+
         const body = {
           isSigned: false,
           documentId: docId,
           reason: reason,
+          signerEmail: signerEmail,
         };
 
         await axios.post(redirectUrl, body, {
